@@ -9,16 +9,16 @@
 #Email         	:   kentosama@genku.net                                          
 ###################################################################
 
-VERSION="3.3.0"
+VERSION="4.5.0.20241231"
 ARCHIVE="newlib-${VERSION}.tar.gz"
 URL="ftp://sourceware.org/pub/newlib/${ARCHIVE}"
-SHA512SUM="2f0c6666487520e1a0af0b6935431f85d2359e27ded0d01d02567d0d1c6479f2f0e6bbc60405e88e46b92c2a18780a01a60fc9281f7e311cfd40b8d5881d629c"
+SHA512SUM="d391ea3ac68ddb722909ef790f81ba4d6c35d9b2e0fcdb029f91a6c47db9ee94a686a2bdff211fb84025e1a317e257acfa59abda3fd2bc6609966798e1c604dc"
 DIR="newlib-${VERSION}"
 
 # Check if user is root
 if [ ${EUID} == 0 ]; then
     echo "Please don't run this script as root"
-    exit
+    exit 1
 fi
 
 # Create build folder
@@ -34,9 +34,11 @@ fi
 
 # Extract the newlib archive if is needed
 if ! [ -d "${SRC_DIR}/${DIR}" ]; then
-    if [ $(sha512sum ${ARCHIVE} | awk '{print $1}') != ${SHA512SUM} ]; then
+    SUM="$(sha512sum "${ARCHIVE}" | awk '{print $1}')"
+    if [ "${SUM}" != "${SHA512SUM}" ]; then
         echo "SHA512SUM verification of ${ARCHIVE} failed!"
-        exit
+        echo "${SUM}"
+        exit 1
     else
         tar -zxvf ${ARCHIVE} -C ${SRC_DIR}
     fi

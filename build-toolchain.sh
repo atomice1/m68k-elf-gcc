@@ -63,7 +63,7 @@ export PATH=$INSTALL_DIR/bin:$PATH
 
 # Build binutils
 if [ ${BUILD_BINUTILS} == "yes" ]; then
-    ./build-binutils.sh
+    #./build-binutils.sh
     if [ $? -ne 0 ]; then
         "Failed to build binutils, please check build.log"
         exit 1
@@ -72,7 +72,7 @@ fi
 
 # Build GCC stage 1
 if [ ${BUILD_GCC_STAGE_1} == "yes" ]; then
-    ./build-gcc.sh
+    #./build-gcc.sh
     if [ $? -ne 0 ]; then
         "Failed to build gcc stage 1, please check build.log"
         exit

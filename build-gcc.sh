@@ -9,16 +9,16 @@
 #Email         	:   kentosama@genku.net                                          
 ##################################################################
 
-VERSION="6.3.0"
-ARCHIVE="gcc-${VERSION}.tar.bz2"
+VERSION="15.2.0"
+ARCHIVE="gcc-${VERSION}.tar.xz"
 URL="https://gcc.gnu.org/pub/gcc/releases/gcc-${VERSION}/${ARCHIVE}"
-SHA512SUM="234dd9b1bdc9a9c6e352216a7ef4ccadc6c07f156006a59759c5e0e6a69f0abcdc14630eff11e3826dd6ba5933a8faa43043f3d1d62df6bd5ab1e82862f9bf78"
+SHA512SUM="89047a2e07bd9da265b507b516ed3635adb17491c7f4f67cf090f0bd5b3fc7f2ee6e4cc4008beef7ca884b6b71dffe2bb652b21f01a702e17b468cca2d10b2de"
 DIR="gcc-${VERSION}"
 
 # Check if user is root
 if [ ${EUID} == 0 ]; then
     echo "Please don't run this script as root"
-    exit
+    exit 1
 fi
 
 # Create build folder
@@ -33,16 +33,18 @@ fi
 
 # Extract gcc archive if is needed
 if ! [ -d "${SRC_DIR}/${DIR}" ]; then
-    if [ $(sha512sum ${ARCHIVE} | awk '{print $1}') != ${SHA512SUM} ]; then
+    SUM="$(sha512sum "${ARCHIVE}" | awk '{print $1}')"
+    if [ "${SUM}" != "${SHA512SUM}" ]; then
         echo "SHA512SUM verification of ${ARCHIVE} failed!"
-        exit
+        echo "${SUM}"
+        exit 1
     else
-        tar jxvf ${ARCHIVE} -C ${SRC_DIR}
+        tar Jxvf ${ARCHIVE} -C ${SRC_DIR}
 
         # Apply patch for ubsan.c at 1474: 
         # || xloc.file == '\0' || xloc.file[0] == '\xff' to
         # || xloc.file[0] == '\0' || xloc.file[0] == '\xff'
-        patch -t ${SRC_DIR}/${DIR}/gcc/ubsan.c < ${ROOT_DIR}/patch/ubsan-fix-check-empty-string.patch
+        #patch -t ${SRC_DIR}/${DIR}/gcc/ubsan.c < ${ROOT_DIR}/patch/ubsan-fix-check-empty-string.patch
 
     fi
 fi
