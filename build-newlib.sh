@@ -63,7 +63,9 @@ cd ${BUILD_DIR}/${DIR}
                                 --target=${TARGET} \
                                 --program-prefix=${PREFIX} \
                                 --disable-newlib-multithread \
-                                --disable-newlib-io-float \
+                                --enable-newlib-io-long-long \
+                                --enable-newlib-io-c99-formats \
+                                --enable-newlib-io-float \
                                 --enable-lite-exit \
                                 --disable-newlib-supplied-syscalls \
 
