@@ -41,10 +41,8 @@ if ! [ -d "${SRC_DIR}/${DIR}" ]; then
     else
         tar Jxvf ${ARCHIVE} -C ${SRC_DIR}
 
-        # Apply patch for ubsan.c at 1474: 
-        # || xloc.file == '\0' || xloc.file[0] == '\xff' to
-        # || xloc.file[0] == '\0' || xloc.file[0] == '\xff'
-        #patch -t ${SRC_DIR}/${DIR}/gcc/ubsan.c < ${ROOT_DIR}/patch/ubsan-fix-check-empty-string.patch
+        # Apply patch for hang in __floatsidf when a1 == 0x8000000.
+        patch -t ${SRC_DIR}/${DIR}/libgcc/config/m68k/fpgnulib.c < ${ROOT_DIR}/patch/fpgnulib-hang-floatsidf-hang.patch
 
     fi
 fi
@@ -64,7 +62,7 @@ cd ${BUILD_DIR}/${DIR}
                                 --host=${HOST_MACH}                 \
                                 --target=${TARGET}                  \
                                 --program-prefix=${PROGRAM_PREFIX}  \
-                                --enable-languages=c                \
+                                --enable-languages=c,c++            \
                                 --enable-obsolete                   \
                                 --enable-lto                        \
                                 --disable-threads                   \

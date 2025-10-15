@@ -1,0 +1,42 @@
+*** gcc-15.2.0/libgcc/config/m68k/fpgnulib.c	2025-09-26 12:15:12.963004365 +0100
+--- gcc-15.2.0/libgcc/config/m68k/fpgnulib.c	2025-09-26 12:17:47.585422297 +0100
+***************
+*** 49,54 ****
+--- 49,56 ----
+  ** in with -msoft-float.
+  */
+  
++ #include <limits.h>
++ 
+  /* the following deal with IEEE single-precision numbers */
+  #define EXCESS		126L
+  #define SIGNBIT		0x80000000L
+*************** __floatsidf (long a1)
+*** 185,197 ****
+    if (a1 < 0)
+      {
+        sign = SIGNBIT;
+!       a1 = (long)-(unsigned long)a1;
+!       if (a1 < 0)
+  	{
+  	  dl.l.upper = SIGNBIT | ((32 + EXCESSD) << 20L);
+  	  dl.l.lower = 0;
+  	  return dl.d;
+          }
+      }
+  
+    while (a1 < 0x1000000L)
+--- 187,199 ----
+    if (a1 < 0)
+      {
+        sign = SIGNBIT;
+!       if (a1 == LONG_MIN)
+  	{
+  	  dl.l.upper = SIGNBIT | ((32 + EXCESSD) << 20L);
+  	  dl.l.lower = 0;
+  	  return dl.d;
+          }
++       a1 = -a1;
+      }
+  
+    while (a1 < 0x1000000L)
