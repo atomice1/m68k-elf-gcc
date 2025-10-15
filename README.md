@@ -88,15 +88,15 @@ The result should display something like this:
 ```bash
 Using built-in specs.
 COLLECT_GCC=./m68k-elf-gcc
-COLLECT_LTO_WRAPPER=/home/kentosama/Workspace/m68-elf-gcc/m68k-toolchain/libexec/gcc/m68k-elf/6.3.0/lto-wrapper
+COLLECT_LTO_WRAPPER=/home/kentosama/Workspace/m68-elf-gcc/m68k-toolchain/libexec/gcc/m68k-elf/15.2.0/lto-wrapper
 Target: m68k-elf
-Configured with: ../../source/gcc-6.3.0/configure --prefix=/home/kentosama/Workspace/m68-elf-gcc/m68k-toolchain --build=x86_64-pc-linux-gnu --host=x86_64-pc-linux-gnu --target=m68k-elf --program-prefix=m68k-elf- --enable-languages=c --enable-obsolete --enable-lto --disable-threads --disable-libmudflap --disable-libgomp --disable-nls --disable-werror --disable-libssp --disable-shared --disable-multilib --disable-libgcj --disable-libstdcxx --disable-gcov --without-headers --without-included-gettext --with-cpu=m68000
+Configured with: ../../source/gcc-15.2.0/configure --prefix=/home/kentosama/Workspace/m68-elf-gcc/m68k-toolchain --build=x86_64-pc-linux-gnu --host=x86_64-pc-linux-gnu --target=m68k-elf --program-prefix=m68k-elf- --enable-languages=c --enable-obsolete --enable-lto --disable-threads --disable-libmudflap --disable-libgomp --disable-nls --disable-werror --disable-libssp --disable-shared --disable-multilib --disable-libgcj --disable-libstdcxx --disable-gcov --without-headers --without-included-gettext --with-cpu=m68000
 Thread model: single
-gcc version 6.3.0 (GCC) 
+gcc version 15.2.0 (GCC) 
 ```
 
 For backup, you can store the Motorola 68000 toolchain in external drive:
 ```bash
-$ tar -Jcvf sh2-gcc-6.3.0-toolchain.tar.xz m68k-toolchain
-$ mv m68k-gcc-6.3.0-toolchain.tar.xz /storage/toolchains/
+$ tar -Jcvf m68k-gcc-15.2.0-toolchain.tar.xz m68k-toolchain
+$ mv m68k-gcc-15.2.0-toolchain.tar.xz /storage/toolchains/
 ```
