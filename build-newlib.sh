@@ -41,6 +41,9 @@ if ! [ -d "${SRC_DIR}/${DIR}" ]; then
         exit 1
     else
         tar -zxvf ${ARCHIVE} -C ${SRC_DIR}
+        cd ${SRC_DIR}/${DIR}
+        patch -t -p1 < ${ROOT_DIR}/patch/newlib.patch
+        cd ../..
     fi
 fi
 
@@ -68,6 +71,7 @@ cd ${BUILD_DIR}/${DIR}
                                 --enable-newlib-io-float \
                                 --enable-lite-exit \
                                 --disable-newlib-supplied-syscalls \
+                                ac_cv_func_system=no
 
 # Build and install newlib
 make -j${NUM_PROC} 2<&1 | tee build.log
