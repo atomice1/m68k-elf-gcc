@@ -1,0 +1,131 @@
+diff -rcp newlib-4.5.0.20241231/libgloss/m68k/leds.c newlib-4.5.0.20241231/libgloss/m68k/leds.c
+*** newlib-4.5.0.20241231/libgloss/m68k/leds.c	2026-02-08 20:45:05.194335302 +0000
+--- newlib-4.5.0.20241231/libgloss/m68k/leds.c	2026-02-08 20:49:16.648688348 +0000
+***************
+*** 15,20 ****
+--- 15,22 ----
+   */
+  #include "leds.h"
+  
++ extern void delay (int num);
++ 
+  /*
+   * led_putnum -- print a hex number on the LED. the value of num must be a char with
+   *              the ascii value. ie... number 0 is '0', a is 'a', ' ' (null) clears
+diff -rcp newlib-4.5.0.20241231/libgloss/m68k/mc68ec.c newlib-4.5.0.20241231/libgloss/m68k/mc68ec.c
+*** newlib-4.5.0.20241231/libgloss/m68k/mc68ec.c	2026-02-08 20:45:05.194374561 +0000
+--- newlib-4.5.0.20241231/libgloss/m68k/mc68ec.c	2026-02-08 20:49:27.174896342 +0000
+***************
+*** 25,31 ****
+   *          prompt. It can be restarted from there.
+   */
+  void
+! _exit (int_status)
+  {
+    /* Use `i' constraint to get proper immediate-operand syntax for
+       target assembler configuration.  */
+--- 25,31 ----
+   *          prompt. It can be restarted from there.
+   */
+  void
+! _exit (int status)
+  {
+    /* Use `i' constraint to get proper immediate-operand syntax for
+       target assembler configuration.  */
+diff -rcp newlib-4.5.0.20241231/libgloss/m68k/sim-abort.c newlib-4.5.0.20241231/libgloss/m68k/sim-abort.c
+*** newlib-4.5.0.20241231/libgloss/m68k/sim-abort.c	2026-02-08 20:45:05.194462747 +0000
+--- newlib-4.5.0.20241231/libgloss/m68k/sim-abort.c	2026-02-08 20:48:08.523591690 +0000
+***************
+*** 14,19 ****
+--- 14,22 ----
+   * they apply.
+   */
+  
++ #include <stdlib.h>
++ #include <unistd.h>
++ 
+  void abort(void)
+  {
+    write (2, "Abort called.\n", sizeof("Abort called.\n")-1);
+diff -rcp newlib-4.5.0.20241231/libgloss/m68k/sim-funcs.c newlib-4.5.0.20241231/libgloss/m68k/sim-funcs.c
+*** newlib-4.5.0.20241231/libgloss/m68k/sim-funcs.c	2026-02-08 20:45:05.194489468 +0000
+--- newlib-4.5.0.20241231/libgloss/m68k/sim-funcs.c	2026-02-08 20:48:27.428277888 +0000
+***************
+*** 14,19 ****
+--- 14,20 ----
+   */
+  
+  #define _XOPEN_SOURCE
++ #include <stdlib.h>
+  #include <unistd.h>
+  
+  int
+diff -rcp newlib-4.5.0.20241231/libgloss/m68k/sim-inbyte.c newlib-4.5.0.20241231/libgloss/m68k/sim-inbyte.c
+*** newlib-4.5.0.20241231/libgloss/m68k/sim-inbyte.c	2026-02-08 20:45:05.194497900 +0000
+--- newlib-4.5.0.20241231/libgloss/m68k/sim-inbyte.c	2026-02-08 20:47:01.560162925 +0000
+***************
+*** 14,19 ****
+--- 14,21 ----
+   * they apply.
+   */
+  
++ #include <unistd.h>
++ 
+  int
+  inbyte ()
+  {
+diff -rcp newlib-4.5.0.20241231/libgloss/m68k/sim-print.c newlib-4.5.0.20241231/libgloss/m68k/sim-print.c
+*** newlib-4.5.0.20241231/libgloss/m68k/sim-print.c	2026-02-08 20:45:05.194506528 +0000
+--- newlib-4.5.0.20241231/libgloss/m68k/sim-print.c	2026-02-08 20:47:52.813100162 +0000
+***************
+*** 13,18 ****
+--- 13,20 ----
+   * they apply.
+   */
+  
++ #include <unistd.h>
++ 
+  /*
+   * print -- do a raw print of a string
+   */ 
+diff -rcp newlib-4.5.0.20241231/libgloss/m68k/sim-sbrk.c newlib-4.5.0.20241231/libgloss/m68k/sim-sbrk.c
+*** newlib-4.5.0.20241231/libgloss/m68k/sim-sbrk.c	2026-02-08 20:45:05.194515835 +0000
+--- newlib-4.5.0.20241231/libgloss/m68k/sim-sbrk.c	2026-02-08 20:49:13.303716264 +0000
+***************
+*** 1,3 ****
+--- 1,4 ----
++ 
+  /*
+   * sim-sbrk.c -- m68k sbrk support when running under the simulator.
+   *
+***************
+*** 14,19 ****
+--- 15,22 ----
+   * they apply.
+   */
+  
++ extern int brk(void *addr);
++ 
+  extern char _end[];
+  static char *curbrk = _end;
+  
+diff -rcp newlib-4.5.0.20241231/newlib/configure.host newlib-4.5.0.20241231/newlib/configure.host
+*** newlib-4.5.0.20241231/newlib/configure.host	2026-02-08 20:45:05.205675983 +0000
+--- newlib-4.5.0.20241231/newlib/configure.host	2026-02-08 20:45:36.978059163 +0000
+*************** newlib_cflags="${newlib_cflags} -DCLOCK_
+*** 764,770 ****
+  	newlib_cflags="${newlib_cflags} -DNO_EXEC -DABORT_PROVIDED -DSMALL_MEMORY -DMISSING_SYSCALL_NAMES"
+  	;;
+    m68k-unknown-elf)
+! 	newlib_cflags="${newlib_cflags} -DHAVE_RENAME -DHAVE_SYSTEM -DMISSING_SYSCALL_NAMES"
+  	syscall_dir=
+  	;;
+    mcore-*-*)
+--- 764,770 ----
+  	newlib_cflags="${newlib_cflags} -DNO_EXEC -DABORT_PROVIDED -DSMALL_MEMORY -DMISSING_SYSCALL_NAMES"
+  	;;
+    m68k-unknown-elf)
+! 	newlib_cflags="${newlib_cflags} -DHAVE_RENAME -DMISSING_SYSCALL_NAMES"
+  	syscall_dir=
+  	;;
+    mcore-*-*)
